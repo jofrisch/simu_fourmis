@@ -42,6 +42,8 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
 	
     individusAleatoires = range(NbIndividus)
     
+    res = []
+    res.append(TableauFourmis)
 		
     for temps in range(NbSimul):
 
@@ -51,8 +53,8 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
             k = individusAleatoires[2*i]
             l = individusAleatoires[2*i+1]
             
-            ChargePremier = TableauFourmis[k][temps]
-            ChargeSecond = TableauFourmis[l][temps]
+            ChargePremier = TableauFourmis[k]
+            ChargeSecond = TableauFourmis[l]
 
             x = random()
             y = random()
@@ -64,17 +66,16 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
             else:
                 don=0
             
-            TableauFourmis[k][temps+1] = TableauFourmis[k][temps]+don
-            TableauFourmis[l][temps+1] = TableauFourmis[l][temps]-don
+            TableauFourmis[k] = TableauFourmis[k]+don
+            TableauFourmis[l] = TableauFourmis[l]-don
 
+        res.append(TableauFourmis)
+    return res
 
 
 ######## TableauFourmis #######
 
-TableauFourmis= [0]*NbIndividus
-for i in range(NbIndividus):
-    TableauFourmis[i]=[0]*(NbSimul+1) # on considère le tps de 0 jusque NbSimul
-
+TableauFourmis = [0 for i in range(NbIndividus)]
 
 ######## Conditions initiales ########
 
@@ -84,19 +85,18 @@ palier=0
 for element in CI:
     j=0
     while j<element[1]:
-        TableauFourmis[palier+j][0]=element[0]
+        TableauFourmis[palier+j]=element[0]
         j+=1
     palier += j
 
 
 ##### Main #####
 
-evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
-
+data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
 
 
 ####### Ecriture du tableau dans un fichier #######
-tf = np.array(TableauFourmis)[:,-1]
+tf = np.array(data)[-1,:]
 
 np.savetxt('newData/donneesLin/10000fourmis/cmoyenne_%i/snapshot500_%02i_charge_%02i.txt' % (c_moyenne,numero,c_moyenne,), tf)
 
