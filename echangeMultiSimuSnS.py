@@ -57,9 +57,9 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
             x = random()
             y = random()
 
-            if x<ProbaRecevoir(ChargePremier,capaciteStock) and y > ProbaRecevoir(ChargeSecond,capaciteStock):
+            if x<ProbaRecevoir(ChargePremier) and y > ProbaRecevoir(ChargeSecond):
                 don = + ChargeUnit
-            elif x>ProbaRecevoir(ChargePremier,capaciteStock) and y < ProbaRecevoir(ChargeSecond,capaciteStock):
+            elif x>ProbaRecevoir(ChargePremier) and y < ProbaRecevoir(ChargeSecond):
                 don = - ChargeUnit
             else:
                 don=0
