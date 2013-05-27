@@ -45,8 +45,7 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
 		
     for temps in range(NbSimul):
 
-        shuffle(individusAleatoires)
-        shuffle(Xrandom)
+        np.random.shuffle(individusAleatoires)
         
         i=0
         
