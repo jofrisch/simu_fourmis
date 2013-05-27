@@ -42,9 +42,6 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
 	
     individusAleatoires = range(NbIndividus)
     
-    Xrandom = []
-    for j in range(NbIndividus):
-		Xrandom.append(random())
 		
     for temps in range(NbSimul):
 
@@ -60,8 +57,8 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
             ChargePremier = TableauFourmis[k][temps]
             ChargeSecond = TableauFourmis[l][temps]
 
-            x = Xrandom[2*i]
-            y = Xrandom[2*i+1]
+            x = random()
+            y = random()
 
             if x<ProbaRecevoir(ChargePremier,capaciteStock) and y > ProbaRecevoir(ChargeSecond,capaciteStock):
                 don = + ChargeUnit
