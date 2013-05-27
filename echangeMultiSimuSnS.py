@@ -33,18 +33,8 @@ ChargeUnit = 1
 
 ####### Loi de proba #######
 
-def ProbaRecevoir(charge,capaciteStock):
-    l = charge * 1. / capaciteStock
-    if 0<l<1 :
-        resultat = 1-l
-    elif l == 0:
-        resultat = 1
-    else:
-		resultat = 0
-
-    return resultat
-
-
+def ProbaRecevoir(charge):
+    return 1.-charge*1./capaciteStock
 
 ###### Evolution de population #####
 
