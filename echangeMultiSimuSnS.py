@@ -47,9 +47,7 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
 
         np.random.shuffle(individusAleatoires)
         
-        i=0
-        
-        while i < NbIndividus/2:
+        for i in xrange(NbIndividus/2):
             k = individusAleatoires[2*i]
             l = individusAleatoires[2*i+1]
             
@@ -68,7 +66,6 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
             
             TableauFourmis[k][temps+1] = TableauFourmis[k][temps]+don
             TableauFourmis[l][temps+1] = TableauFourmis[l][temps]-don
-	    i+=1
 
 
 
