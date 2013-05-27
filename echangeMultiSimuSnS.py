@@ -12,6 +12,12 @@ from math import *
 import numpy as np
 from sys import argv
 
+if len(argv)<3:
+    print """Usage:
+python echangeMultiSimuSnS.py c_moyenne numero
+où c_moyenne est la charge moyenne par fourmi (entier entre 1 et 100) et numero
+une référence arbitraire pour éxécuter plusieurs fois la même simulation."""
+
 
 c_moyenne = int(argv[1])
 numero = int(argv[2])
