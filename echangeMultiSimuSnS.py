@@ -5,12 +5,13 @@
  for ii in `seq 10`; do for jj in `seq 5`; do python nimp.py $ii $jj; done; done
 """ 
 
-
 from random import *
 from math import *
 
 import numpy as np
 from sys import argv
+
+import echange
 
 if len(argv)<3:
     print """Usage:
@@ -38,36 +39,38 @@ def ProbaRecevoir(charge):
 
 ###### Evolution de population #####
 
+def one_step(individusAleatoires, TableauFourmis, PR):
+    NbIndividus = len(TableauFourmis)
+    for i in xrange(NbIndividus/2):
+        k = individusAleatoires[2*i]
+        l = individusAleatoires[2*i+1]
+
+        ChargePremier = TableauFourmis[k]
+        ChargeSecond = TableauFourmis[l]
+
+        x = random()
+        y = random()
+
+        if x<PR(ChargePremier) and y > PR(ChargeSecond):
+            don = 1
+        elif x>PR(ChargePremier) and y < PR(ChargeSecond):
+            don = -1
+        else:
+            don=0
+
+        TableauFourmis[k] = TableauFourmis[k]+don
+        TableauFourmis[l] = TableauFourmis[l]-don
+
 def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
-	
-    individusAleatoires = range(NbIndividus)
-    
+
+    individusAleatoires = np.arange(NbIndividus)
+
     res = []
     res.append(TableauFourmis)
-		
+
     for temps in range(NbSimul):
 
-        np.random.shuffle(individusAleatoires)
-        
-        for i in xrange(NbIndividus/2):
-            k = individusAleatoires[2*i]
-            l = individusAleatoires[2*i+1]
-            
-            ChargePremier = TableauFourmis[k]
-            ChargeSecond = TableauFourmis[l]
-
-            x = random()
-            y = random()
-
-            if x<ProbaRecevoir(ChargePremier) and y > ProbaRecevoir(ChargeSecond):
-                don = + ChargeUnit
-            elif x>ProbaRecevoir(ChargePremier) and y < ProbaRecevoir(ChargeSecond):
-                don = - ChargeUnit
-            else:
-                don=0
-            
-            TableauFourmis[k] = TableauFourmis[k]+don
-            TableauFourmis[l] = TableauFourmis[l]-don
+        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock)#, echange.PR_lin)
 
         res.append(TableauFourmis)
     return res
@@ -75,7 +78,7 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
 
 ######## TableauFourmis #######
 
-TableauFourmis = [0 for i in range(NbIndividus)]
+TableauFourmis = np.zeros((NbIndividus,), dtype=np.int64)
 
 ######## Conditions initiales ########
 
@@ -98,7 +101,7 @@ data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)[-1,:]
 
-np.savetxt('newData/donneesLin/10000fourmis/cmoyenne_%i/snapshot500_%02i_charge_%02i.txt' % (c_moyenne,numero,c_moyenne,), tf)
+np.savetxt('snapshot500_%02i_charge_%02i.txt' % (numero,c_moyenne,), tf)
 
 
 print "hey bro!" 
