@@ -82,15 +82,7 @@ TableauFourmis = np.zeros((NbIndividus,), dtype=np.int64)
 
 ######## Conditions initiales ########
 
-CI=[(c_moyenne,NbIndividus)]
-#On impose les CI:
-palier=0
-for element in CI:
-    j=0
-    while j<element[1]:
-        TableauFourmis[palier+j]=element[0]
-        j+=1
-    palier += j
+echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
 
 
 ##### Main #####
