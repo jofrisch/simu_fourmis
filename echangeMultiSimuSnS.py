@@ -12,6 +12,7 @@ import numpy as np
 from sys import argv
 
 import echange
+from evolution import *
 
 if len(argv)<3:
     print """Usage:
@@ -24,7 +25,7 @@ c_moyenne = int(argv[1])
 numero = int(argv[2])
 
 ####### Paramètres ########
-NbSimul = 500
+NbSimul = 600
 
 NbIndividus = 10000 #Choisir un nb pair
 capaciteStock = 100
@@ -38,7 +39,7 @@ def ProbaRecevoir(charge):
     return 1.-charge*1./capaciteStock
 
 ###### Evolution de population #####
-
+"""
 def one_step(individusAleatoires, TableauFourmis, PR):
     NbIndividus = len(TableauFourmis)
     for i in xrange(NbIndividus/2):
@@ -60,20 +61,8 @@ def one_step(individusAleatoires, TableauFourmis, PR):
 
         TableauFourmis[k] = TableauFourmis[k]+don
         TableauFourmis[l] = TableauFourmis[l]-don
+"""
 
-def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
-
-    individusAleatoires = np.arange(NbIndividus)
-
-    res = []
-    res.append(TableauFourmis)
-
-    for temps in range(NbSimul):
-
-        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock)#, echange.PR_lin)
-
-        res.append(TableauFourmis)
-    return res
 
 
 ######## TableauFourmis #######
@@ -91,10 +80,12 @@ data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
 
 
 ####### Ecriture du tableau dans un fichier #######
-tf = np.array(data)[-1,:]
-
-np.savetxt('snapshot500_%02i_charge_%02i.txt' % (numero,c_moyenne,), tf)
-
+#tf = np.array(data)[-1,:]
+print data
+"""
+tf = TableauFourmis
+np.savetxt('../newData/donneesVague/%ipdt/Q%i/snapshot%i_%02i_charge_%02i.txt' % (NbSimul,c_moyenne,NbSimul,numero,c_moyenne,), tf)
+"""
 
 print "hey bro!" 
 
