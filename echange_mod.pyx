@@ -95,7 +95,7 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         TableauFourmis[k] = TableauFourmis[k]+don
         TableauFourmis[l] = TableauFourmis[l]-don
 
-        return
+    return
 
 def distribute(np.ndarray[np.int64_t, ndim=1] TableauFourmis, int c_moyenne, int capa):
     cdef int i, j
