@@ -2,3 +2,6 @@
 /cython_debug/
 *.so
 *~
+*.pyc
+/echange_mod.c
+

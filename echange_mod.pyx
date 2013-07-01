@@ -71,7 +71,7 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
     cdef np.ndarray[np.float64_t, ndim=1] draws = np.random.random(NbIndividus)
 
     cshuffle(individusAleatoires)
-
+    
     for i in range(NbIndividus/2):
         k = individusAleatoires[2*i]
         l = individusAleatoires[2*i+1]
@@ -92,9 +92,10 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         else:
             don=0
             
+
+        
         TableauFourmis[k] = TableauFourmis[k]+don
         TableauFourmis[l] = TableauFourmis[l]-don
-
     return
 
 def distribute(np.ndarray[np.int64_t, ndim=1] TableauFourmis, int c_moyenne, int capa):
