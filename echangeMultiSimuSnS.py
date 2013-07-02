@@ -12,6 +12,7 @@ import numpy as np
 from sys import argv
 
 import echange
+from evolution import evolution
 
 if len(argv)<3:
     print """Usage:
@@ -61,21 +62,6 @@ def one_step(individusAleatoires, TableauFourmis, PR):
         TableauFourmis[k] = TableauFourmis[k]+don
         TableauFourmis[l] = TableauFourmis[l]-don
 
-def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
-
-    individusAleatoires = np.arange(NbIndividus)
-
-    res = []
-    res.append(TableauFourmis)
-
-    for temps in range(NbSimul):
-
-        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock)#, echange.PR_lin)
-
-        res.append(TableauFourmis)
-    return res
-
-
 ######## TableauFourmis #######
 
 TableauFourmis = np.zeros((NbIndividus,), dtype=np.int64)
@@ -83,7 +69,6 @@ TableauFourmis = np.zeros((NbIndividus,), dtype=np.int64)
 ######## Conditions initiales ########
 
 echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
-
 
 ##### Main #####
 
