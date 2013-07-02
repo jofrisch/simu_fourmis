@@ -9,29 +9,32 @@ from random import *
 from math import *
 
 import numpy as np
-from sys import argv
 
 import echange
 from evolution import evolution
+import argparse
 
-if len(argv)<3:
-    print """Usage:
-python echangeMultiSimuSnS.py c_moyenne numero
-où c_moyenne est la charge moyenne par fourmi (entier entre 1 et 100) et numero
-une référence arbitraire pour éxécuter plusieurs fois la même simulation."""
+parser = argparse.ArgumentParser(description='Run a simulation of food exchange.')
+parser.add_argument('id', type=int, help='id of the simulation')
+parser.add_argument('-q', type=int, help='Average load', required=True)
+parser.add_argument('-N', type=int, help='Number of individuals', default=500)
+parser.add_argument('--qmax', type=int, help='Capacity of the individuals', default=100)
+parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
 
+args = parser.parse_args()
 
-c_moyenne = int(argv[1])
-numero = int(argv[2])
+c_moyenne = args.q
+numero = args.id
 
 ####### Paramètres ########
-NbSimul = 500
+NbSimul = args.steps
 
-NbIndividus = 10000 #Choisir un nb pair
-capaciteStock = 100
+NbIndividus = args.N
+if NbIndividus%2 !=0:
+    print 'the number of individuals should be even'
+    exit()
+capaciteStock = args.qmax
 ChargeUnit = 1
-
-
 
 ####### Loi de proba #######
 
@@ -78,7 +81,7 @@ data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)[-1,:]
 
-np.savetxt('snapshot500_%02i_charge_%02i.txt' % (numero,c_moyenne,), tf)
+np.savetxt('snapshot%05i_%02i_charge_%02i.txt' % (NbSimul,numero,c_moyenne,), tf)
 
 
 print "hey bro!" 
