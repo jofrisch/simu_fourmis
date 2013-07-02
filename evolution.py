@@ -10,7 +10,7 @@ import echange
 
 
 
-def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
+def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,loi):
 
     individusAleatoires = np.arange(NbIndividus)
 
@@ -19,7 +19,7 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit):
 
     for temps in range(NbSimul):
 		
-        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock)#, echange.PR_lin)
+        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock,loi)
 
         res.append(TableauFourmis.copy())
     return res

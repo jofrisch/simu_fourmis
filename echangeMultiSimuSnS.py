@@ -20,11 +20,14 @@ parser.add_argument('-q', type=int, help='Average load', required=True)
 parser.add_argument('-N', type=int, help='Number of individuals', default=500)
 parser.add_argument('--qmax', type=int, help='Capacity of the individuals', default=100)
 parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
+parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
 
 args = parser.parse_args()
 
 c_moyenne = args.q
 numero = args.id
+
+num_law = {'cste':0, 'lin':1, 'anti':2, 'vague':3}
 
 ####### Paramètres ########
 NbSimul = args.steps
@@ -75,7 +78,7 @@ echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
 
 ##### Main #####
 
-data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
+data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law])
 
 
 ####### Ecriture du tableau dans un fichier #######
