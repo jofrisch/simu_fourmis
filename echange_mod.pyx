@@ -46,6 +46,37 @@ local_error = rk_randomseed(s)
 @cython.cdivision(True)
 cdef double PR_lin(int charge, int capa):
     return 1.-charge*1./capa
+    
+@cython.cdivision(True)
+cdef double PR_cste(int charge, int capa):
+    if 0<charge<capa:
+        return 0.5
+    elif charge == 0:
+        return 1
+    elif charge == capa:
+        return 0
+ 
+@cython.cdivision(True)
+cdef double PR_anti(int charge, int capa):
+    if 0<charge<capa:
+        return charge*1./capa
+    elif charge == 0:
+        return 1
+    elif charge == capa:
+        return 0    
+
+@cython.cdivision(True)
+cdef double PR_vague(int charge, int capa):
+    cdef double l
+    l = charge*1./capa
+    if 0<charge<capa:
+        return -2*l**2+1.5*l*0.5
+    elif charge == 0:
+        return 1
+    elif charge == capa:
+        return 0    
+
+
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -59,14 +90,25 @@ cdef void cshuffle(np.ndarray[np.int64_t, ndim=1] x):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.int64_t, ndim=1] TableauFourmis, int capa):
+def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.int64_t, ndim=1] TableauFourmis, int capa, int loi):
     cdef int NbIndividus = TableauFourmis.shape[0]
     cdef int k, l, don
     cdef unsigned int i
     cdef int ChargePremier, ChargeSecond
         
     cdef double x,y, P1, P2
-    PR=PR_lin
+    
+    if loi == 0:
+        PR=PR_cste
+    elif loi == 1:
+        PR = PR_lin
+    elif loi == 2:
+        PR = PR_anti
+    elif loi == 3:
+        PR = PR_vague
+    else:
+        print "ERREUR, MAUVAIS ARGUMENT DEFINISSANT LA LOI D'ECHANGE"
+        return
 
     cdef np.ndarray[np.float64_t, ndim=1] draws = np.random.random(NbIndividus)
 
