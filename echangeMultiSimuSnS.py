@@ -14,6 +14,8 @@ import echange
 from evolution import evolution
 import argparse
 
+import h5py
+
 parser = argparse.ArgumentParser(description='Run a simulation of food exchange.')
 parser.add_argument('id', type=int, help='id of the simulation')
 parser.add_argument('-q', type=int, help='Average load', required=True)
@@ -78,8 +80,11 @@ echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
 
 ##### Main #####
 
-data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law])
+f = h5py.File('hop.h5')
 
+data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f)
+
+f.close()
 
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)[-1,:]
