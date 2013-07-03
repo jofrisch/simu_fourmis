@@ -70,7 +70,7 @@ cdef double PR_vague(int charge, int capa):
     cdef double l
     l = charge*1./capa
     if 0<charge<capa:
-        return -2*l**2+1.5*l*0.5
+        return -2*l**2+1.5*l+0.5
     elif charge == 0:
         return 1
     elif charge == capa:
