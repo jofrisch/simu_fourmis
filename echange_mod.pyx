@@ -126,7 +126,6 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
             while k==l:
                 k = rk_interval(NbIndividus,s)
                 l = rk_interval(NbIndividus,s)
-            print k,l
 
         ChargePremier = TableauFourmis[k]
         ChargeSecond = TableauFourmis[l]
