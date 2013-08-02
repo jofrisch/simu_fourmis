@@ -22,6 +22,7 @@ parser.add_argument('-q', type=int, help='Average load', required=True)
 parser.add_argument('-N', type=int, help='Number of individuals', default=500)
 parser.add_argument('--qmax', type=int, help='Capacity of the individuals', default=100)
 parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
+parser.add_argument('--asyn_steps', type=int, help='Number of time steps for asynchronous simulation', default=-1)
 parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
 
 args = parser.parse_args()
@@ -82,7 +83,7 @@ echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
 
 f = h5py.File('hop.h5')
 
-data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f)
+data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f, args.asyn_steps)
 
 f.close()
 

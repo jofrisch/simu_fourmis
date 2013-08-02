@@ -10,7 +10,7 @@ import echange
 import h5py
 
 
-def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,loi, h5file):
+def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,loi, h5file, asyn_steps):
 
     individusAleatoires = np.arange(NbIndividus)
 
@@ -22,7 +22,7 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,loi, h
 
     for temps in range(NbSimul):
 		
-        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock,loi)
+        echange.one_step(individusAleatoires, TableauFourmis, capaciteStock,loi, asyn_steps)
 
         res.append(TableauFourmis.copy())
         dset.resize(dset.shape[0]+1, axis=0)

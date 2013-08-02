@@ -90,12 +90,12 @@ cdef void cshuffle(np.ndarray[np.int64_t, ndim=1] x):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.int64_t, ndim=1] TableauFourmis, int capa, int loi):
+def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.int64_t, ndim=1] TableauFourmis, int capa, int loi, int asyn_steps):
     cdef int NbIndividus = TableauFourmis.shape[0]
     cdef int k, l, don
     cdef unsigned int i
     cdef int ChargePremier, ChargeSecond
-        
+    cdef int n_steps
     cdef double x,y, P1, P2
 
     if loi == 0:
@@ -112,12 +112,21 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
 
     cdef np.ndarray[np.float64_t, ndim=1] draws = np.random.random(NbIndividus)
 
-    cshuffle(individusAleatoires)
+    if asyn_steps<0:
+        cshuffle(individusAleatoires)
+        n_steps = NbIndividus/2
+    else:
+        n_steps = asyn_steps
     
-    for i in range(NbIndividus/2):
-        k = individusAleatoires[2*i]
-        l = individusAleatoires[2*i+1]
-        
+    for i in range(n_steps):
+        if asyn_steps<0:
+            k = individusAleatoires[2*i]
+            l = individusAleatoires[2*i+1]
+        else:
+            cshuffle(individusAleatoires)
+            k = individusAleatoires[0]
+            l = individusAleatoires[1]
+
         ChargePremier = TableauFourmis[k]
         ChargeSecond = TableauFourmis[l]
         
