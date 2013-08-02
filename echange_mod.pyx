@@ -38,6 +38,7 @@ cdef extern from "randomkit.h":
     cdef unsigned long RK_MAX
     cdef unsigned long rk_interval(unsigned long max, rk_state *state)
     cdef rk_error rk_randomseed(rk_state *state)
+    cdef double rk_double(rk_state *state)
 
 cdef rk_state *s = <rk_state *> malloc(sizeof(rk_state))
 cdef local_error
@@ -110,8 +111,6 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         print "ERREUR, MAUVAIS ARGUMENT DEFINISSANT LA LOI D'ECHANGE"
         return
 
-    cdef np.ndarray[np.float64_t, ndim=1] draws = np.random.random(NbIndividus)
-
     if asyn_steps<0:
         cshuffle(individusAleatoires)
         n_steps = NbIndividus/2
@@ -130,8 +129,8 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         ChargePremier = TableauFourmis[k]
         ChargeSecond = TableauFourmis[l]
         
-        x = draws[2*i]
-        y = draws[2*i+1]
+        x = rk_double(s)
+        y = rk_double(s)
 
         P1 = PR(ChargePremier, capa)
         P2 = PR(ChargeSecond, capa)
