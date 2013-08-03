@@ -83,7 +83,7 @@ echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
 
 f = h5py.File('hop.h5')
 
-data = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f, args.asyn_steps)
+data, m2 = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f, args.asyn_steps)
 
 f.close()
 
@@ -92,6 +92,7 @@ tf = np.array(data)[-1,:]
 
 np.savetxt('snapshot%05i_%02i_charge_%02i.txt' % (NbSimul,numero,c_moyenne,), tf)
 
+np.savetxt('m2_%02i_charge_%02i.txt' % (numero,c_moyenne,), m2)
 
 print "hey bro!" 
 
