@@ -24,6 +24,7 @@ parser.add_argument('--qmax', type=int, help='Capacity of the individuals', defa
 parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
 parser.add_argument('--asyn_steps', type=int, help='Number of time steps for asynchronous simulation', default=-1)
 parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
+parser.add_argument('--h5_out', type=str, help='HDF5 filename for outputting trajectory', default='')
 
 args = parser.parse_args()
 
@@ -81,11 +82,15 @@ echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
 
 ##### Main #####
 
-f = h5py.File('hop.h5')
+if len(args.h5_out)>0:
+    f = h5py.File(args.h5_out)
+else:
+    f = None
 
 data, m2 = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f, args.asyn_steps)
 
-f.close()
+if f:
+    f.close()
 
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)[-1,:]

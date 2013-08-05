@@ -18,16 +18,18 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,loi, h
     res.append(TableauFourmis.copy())
     m2 = []
 
-    dset = h5file.create_dataset('q', shape=(1,TableauFourmis.shape[0]), dtype=TableauFourmis.dtype, maxshape=(None,TableauFourmis.shape[0]))
-    dset[-1] = TableauFourmis
+    if h5file:
+        dset = h5file.create_dataset('q', shape=(1,TableauFourmis.shape[0]), dtype=TableauFourmis.dtype, maxshape=(None,TableauFourmis.shape[0]))
+        dset[-1] = TableauFourmis
 
     for temps in range(NbSimul):
 		
         echange.one_step(individusAleatoires, TableauFourmis, capaciteStock,loi, asyn_steps)
 
         res.append(TableauFourmis.copy())
-        dset.resize(dset.shape[0]+1, axis=0)
-        dset[-1] = TableauFourmis
+        if h5file:
+            dset.resize(dset.shape[0]+1, axis=0)
+            dset[-1] = TableauFourmis
 
         m2.append( np.sum(TableauFourmis**2) )
 
