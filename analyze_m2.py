@@ -18,11 +18,16 @@ for c in charges:
     runs = glob('m2_*_charge_%02i.txt' % (c,))
     m2 = []
     col = cc.pop(0)
+    label = False
     for r in runs:
         if args.mean:
             m2.append(np.loadtxt(r))
         else:
-            plt.plot(np.loadtxt(r), label='Charge %02i' % (c,), c=col)
+            if not label:
+                plt.plot(np.loadtxt(r), label='Charge %02i' % (c,), c=col)
+                label = True
+            else:
+                plt.plot(np.loadtxt(r), c=col)
     if args.mean:
         m2 = np.array(m2)
         plt.plot(m2.mean(axis=0), label='Charge %02i' % (c,))
