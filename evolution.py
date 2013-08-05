@@ -31,6 +31,6 @@ def evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,loi, h
             dset.resize(dset.shape[0]+1, axis=0)
             dset[-1] = TableauFourmis
 
-        m2.append( np.sum(TableauFourmis**2) )
+        m2.append( np.mean(TableauFourmis**2) )
 
     return res, m2

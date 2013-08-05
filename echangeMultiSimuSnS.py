@@ -97,7 +97,7 @@ tf = np.array(data)[-1,:]
 
 np.savetxt('snapshot%05i_%02i_charge_%02i.txt' % (NbSimul,numero,c_moyenne,), tf)
 
-np.savetxt('m2_%02i_charge_%02i.txt' % (numero,c_moyenne,), m2)
+np.savetxt('m2_%02i_charge_%02i.txt' % (numero,c_moyenne,), np.array(m2)/capaciteStock**2)
 
 print "hey bro!" 
 
