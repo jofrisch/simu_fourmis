@@ -31,7 +31,7 @@ args = parser.parse_args()
 c_moyenne = args.q
 numero = args.id
 
-num_law = {'cste':0, 'lin':1, 'anti':2, 'vague':3}
+num_law = {'cste':0, 'lin':1, 'anti':2, 'vague':3,'applatie':4}
 
 ####### Paramètres ########
 NbSimul = args.steps
@@ -43,43 +43,11 @@ if NbIndividus%2 !=0:
 capaciteStock = args.qmax
 ChargeUnit = 1
 
-####### Loi de proba #######
-
-def ProbaRecevoir(charge):
-    return 1.-charge*1./capaciteStock
-
-###### Evolution de population #####
-
-def one_step(individusAleatoires, TableauFourmis, PR):
-    NbIndividus = len(TableauFourmis)
-    for i in xrange(NbIndividus/2):
-        k = individusAleatoires[2*i]
-        l = individusAleatoires[2*i+1]
-
-        ChargePremier = TableauFourmis[k]
-        ChargeSecond = TableauFourmis[l]
-
-        x = random()
-        y = random()
-
-        if x<PR(ChargePremier) and y > PR(ChargeSecond):
-            don = 1
-        elif x>PR(ChargePremier) and y < PR(ChargeSecond):
-            don = -1
-        else:
-            don=0
-
-        TableauFourmis[k] = TableauFourmis[k]+don
-        TableauFourmis[l] = TableauFourmis[l]-don
-
 ######## TableauFourmis #######
 
 TableauFourmis = np.zeros((NbIndividus,), dtype=np.int64)
-
 ######## Conditions initiales ########
-
 echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
-
 ##### Main #####
 
 if len(args.h5_out)>0:
@@ -93,9 +61,9 @@ if f:
     f.close()
 
 ####### Ecriture du tableau dans un fichier #######
-tf = np.array(data)[-1,:]
+tf = np.array(data)
 
-np.savetxt('snapshot%05i_%02i_charge_%02i.txt' % (NbSimul,numero,c_moyenne,), tf)
+np.savetxt('ParamDistrib/Vague_Mixte/snapshot%04i_%s_%02i_charge_%02i.txt' % (NbSimul,args.law,numero,c_moyenne,), tf)
 
 np.savetxt('m2_%02i_charge_%02i.txt' % (numero,c_moyenne,), np.array(m2)/capaciteStock**2)
 

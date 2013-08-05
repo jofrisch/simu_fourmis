@@ -130,24 +130,11 @@ def evolution_SY(TableauFourmis_SY,NbSimul,NbIndividus,capaciteStock,ChargeUnit)
         
     return M2Table
 
-######## TableauFourmis #######
+######## TableauInit #######
 
 TableauInit = [0 for i in range(NbIndividus)]
 
 ######## Conditions initiales ########
-
-CI=[(c_moyenne,NbIndividus)]
-#On impose les CI:
-"""
-palier=0
-for element in CI:
-    j=0
-    while j<element[1]:
-        TableauInit[palier+j]=element[0]
-        j+=1
-    palier += j
-"""
-print "start init"
 for element in range(c_moyenne*NbIndividus):
     while True:
         fourmi = np.random.randint(0,NbIndividus)
