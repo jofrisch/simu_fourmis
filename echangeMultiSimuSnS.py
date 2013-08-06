@@ -24,6 +24,8 @@ parser.add_argument('--qmax', type=int, help='Capacity of the individuals', defa
 parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
 parser.add_argument('--asyn_steps', type=int, help='Number of time steps for asynchronous simulation', default=-1)
 parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
+
+	
 parser.add_argument('--h5_out', type=str, help='HDF5 filename for outputting trajectory', default='')
 
 args = parser.parse_args()
@@ -63,9 +65,7 @@ if f:
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)
 
-np.savetxt('ParamDistrib/Vague_Mixte/snapshot%04i_%s_%02i_charge_%02i.txt' % (NbSimul,args.law,numero,c_moyenne,), tf)
-
-np.savetxt('m2_%02i_charge_%02i.txt' % (numero,c_moyenne,), np.array(m2)/capaciteStock**2)
+np.savetxt('ComparaisonSYAS/m2_sync%02i_%s_%02i_N%02i_Q%02i.txt' % (args.asyn_steps ,args.law,numero,NbIndividus,c_moyenne,), np.array(m2)/capaciteStock**2)
 
 print "hey bro!" 
 

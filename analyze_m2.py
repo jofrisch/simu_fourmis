@@ -8,6 +8,9 @@ import argparse
 parser = argparse.ArgumentParser(description='Analyze m2 data from the simulation.')
 parser.add_argument('-q', type=int, help='Average load', nargs='+')
 parser.add_argument('--mean', action='store_true', help='Plot only the mean for a given charge')
+parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
+parser.add_argument('--asyn_steps', type=int, help='Number of time steps for asynchronous simulation', default=-1)
+
 args = parser.parse_args()
 
 charges = args.q
@@ -15,7 +18,7 @@ charges = args.q
 cc = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 
 for c in charges:
-    runs = glob('m2_*_charge_%02i.txt' % (c,))
+    runs = glob('ComparaisonSYAS/m2_sync%02i_%s_*_N500_Q%02i.txt' % (args.asyn_steps ,args.law,c,))
     m2 = []
     col = cc.pop(0)
     label = False
