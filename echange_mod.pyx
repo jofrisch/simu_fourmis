@@ -149,13 +149,15 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         TableauFourmis[l] = TableauFourmis[l]-don
     return
 
-def distribute(np.ndarray[np.int64_t, ndim=1] TableauFourmis, int c_moyenne, int capa):
+def distribute_multi(np.ndarray[np.int64_t, ndim=1] TableauFourmis, int c_moyenne, int capa,int charge):
     cdef int i, j
     cdef int l = TableauFourmis.shape[0]-1
-    for i in range(c_moyenne*(l+1)):
+    
+    for i in range(c_moyenne*(l+1)/charge):
         while True:
             j = rk_interval(l, s)
-            if TableauFourmis[j]<capa:
-                TableauFourmis[j] += 1
+            if TableauFourmis[j]<=capa-charge:
+                TableauFourmis[j] += charge
                 break
+
     return

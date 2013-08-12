@@ -24,8 +24,8 @@ parser.add_argument('--qmax', type=int, help='Capacity of the individuals', defa
 parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
 parser.add_argument('--asyn_steps', type=int, help='Number of time steps for asynchronous simulation', default=-1)
 parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
+parser.add_argument('--charge_distrib', type=int, help='Elementary charge for initial distribution', default=1)
 
-	
 parser.add_argument('--h5_out', type=str, help='HDF5 filename for outputting trajectory', default='')
 
 args = parser.parse_args()
@@ -49,7 +49,7 @@ ChargeUnit = 1
 
 TableauFourmis = np.zeros((NbIndividus,), dtype=np.int64)
 ######## Conditions initiales ########
-echange.distribute(TableauFourmis, c_moyenne, capaciteStock)
+echange.distribute_multi(TableauFourmis, c_moyenne, capaciteStock,args.charge_distrib)
 ##### Main #####
 
 if len(args.h5_out)>0:
@@ -66,7 +66,8 @@ if f:
 tf = np.array(data)
 
 np.savetxt('ComparaisonSYAS/m2_sync%02i_%s_%02i_N%02i_Q%02i.txt' % (args.asyn_steps ,args.law,numero,NbIndividus,c_moyenne,), np.array(m2)/capaciteStock**2)
+np.savetxt('snapshot%i_%s_sync%i_Steps%i_N%02i_Q%02i.txt'%(numero,args.law,args.asyn_steps,args.steps,NbIndividus,c_moyenne),tf[0])
 
-print "hey bro!" 
+print "hey bro!"
 
 
