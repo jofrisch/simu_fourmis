@@ -13,11 +13,13 @@ import numpy as np
 import echange
 from evolution import evolution
 import argparse
+import os.path
 
 import h5py
 
 parser = argparse.ArgumentParser(description='Run a simulation of food exchange.')
 parser.add_argument('id', type=int, help='id of the simulation')
+parser.add_argument('name', type=str, help='name of the simulation directory')
 parser.add_argument('-q', type=int, help='Average load', required=True)
 parser.add_argument('-N', type=int, help='Number of individuals', default=500)
 parser.add_argument('--qmax', type=int, help='Capacity of the individuals', default=100)
@@ -29,6 +31,10 @@ parser.add_argument('--charge_distrib', type=int, help='Elementary charge for in
 parser.add_argument('--h5_out', type=str, help='HDF5 filename for outputting trajectory', default='')
 
 args = parser.parse_args()
+
+if not os.path.isdir(args.name):
+    print "No directory of name ", args.name
+    exit()
 
 c_moyenne = args.q
 numero = args.id
@@ -65,8 +71,8 @@ if f:
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)
 
-np.savetxt('ComparaisonSYAS/m2_sync%02i_%s_%02i_N%02i_Q%02i.txt' % (args.asyn_steps ,args.law,numero,NbIndividus,c_moyenne,), np.array(m2)/capaciteStock**2)
-np.savetxt('snapshot%i_%s_sync%i_Steps%i_N%02i_Q%02i.txt'%(numero,args.law,args.asyn_steps,args.steps,NbIndividus,c_moyenne),tf[0])
+np.savetxt(os.path.join(args.name,'m2_%02i_%s_sync%04i_N%02i_Q%02i.txt' % (numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,)), np.array(m2)/capaciteStock**2)
+np.savetxt(os.path.join(args.name,'snapshot_%02i_%s_sync%04i_N%02i_Q%02i_Steps%i.txt'%(numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,args.steps)),tf[0])
 
 print "hey bro!"
 
