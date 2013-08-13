@@ -149,6 +149,7 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         TableauFourmis[l] = TableauFourmis[l]-don
     return
 
+@cython.cdivision(True)
 def distribute_multi(np.ndarray[np.int64_t, ndim=1] TableauFourmis, int c_moyenne, int capa,int charge):
     cdef int i, j
     cdef int l = TableauFourmis.shape[0]-1
