@@ -26,6 +26,7 @@ parser.add_argument('--qmax', type=int, help='Capacity of the individuals', defa
 parser.add_argument('--steps', type=int, help='Number of time steps', default=1000)
 parser.add_argument('--asyn_steps', type=int, help='Number of time steps for asynchronous simulation', default=-1)
 parser.add_argument('--law', type=str, choices=['cste', 'lin', 'anti', 'vague' ], help='Probability exchange law', default='cste')
+parser.add_argument('--exch', type=int, help='Average inverse exchanged quantity', default=100)
 parser.add_argument('--charge_distrib', type=int, help='Elementary charge for initial distribution', default=1)
 
 parser.add_argument('--h5_out', type=str, help='HDF5 filename for outputting trajectory', default='')
@@ -63,7 +64,7 @@ if len(args.h5_out)>0:
 else:
     f = None
 
-data, m2 = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], f, args.asyn_steps)
+data, m2 = evolution(TableauFourmis,NbSimul,NbIndividus,capaciteStock,ChargeUnit,num_law[args.law], args.exch, f, args.asyn_steps)
 
 if f:
     f.close()
@@ -71,8 +72,8 @@ if f:
 ####### Ecriture du tableau dans un fichier #######
 tf = np.array(data)
 
-np.savetxt(os.path.join(args.name,'m2_%02i_%s_sync%04i_N%02i_Q%02i.txt' % (numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,)), np.array(m2)/capaciteStock**2)
-np.savetxt(os.path.join(args.name,'snapshot_%02i_%s_sync%04i_N%02i_Q%02i_Steps%i.txt'%(numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,args.steps)),tf[0])
+np.savetxt(os.path.join(args.name,'m2_%02i_%s_sync%04i_N%02i_Q%02i_ex%05i.txt' % (numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,args.exch)), np.array(m2)/capaciteStock**2)
+np.savetxt(os.path.join(args.name,'snapshot_%02i_%s_sync%04i_N%02i_Q%02i_ex%05i_Steps%i.txt'%(numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,args.exch,args.steps)),tf[-1])
 
 print "hey bro!"
 

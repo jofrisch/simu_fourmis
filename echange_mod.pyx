@@ -40,6 +40,9 @@ cdef extern from "randomkit.h":
     cdef rk_error rk_randomseed(rk_state *state)
     cdef double rk_double(rk_state *state)
 
+cdef extern from "distributions.h":
+    cdef long rk_geometric(rk_state *state, double p)
+
 cdef rk_state *s = <rk_state *> malloc(sizeof(rk_state))
 cdef local_error
 local_error = rk_randomseed(s)
@@ -91,7 +94,7 @@ cdef void cshuffle(np.ndarray[np.int64_t, ndim=1] x):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.int64_t, ndim=1] TableauFourmis, int capa, int loi, int asyn_steps):
+def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.int64_t, ndim=1] TableauFourmis, int capa, int loi, int exch, int asyn_steps):
     cdef int NbIndividus = TableauFourmis.shape[0]
     cdef int k, l, don
     cdef unsigned int i
@@ -136,15 +139,32 @@ def one_step(np.ndarray[np.int64_t, ndim=1] individusAleatoires, np.ndarray[np.i
         P1 = PR(ChargePremier, capa)
         P2 = PR(ChargeSecond, capa)
 
+        don_max = 2*capa
+        don = don_max
+
         if x<P1 and y>P2:
-            don = 1
+            # k receives and l gives
+            # get don from geometric distribution
+            if don_max > (capa-ChargePremier):
+                don_max = capa-ChargePremier
+            if don_max>ChargeSecond:
+                don_max = ChargeSecond
+            while don>don_max:
+                don = rk_geometric(s, exch*1./capa)
         elif x>P1 and y<P2:
-            don = -1
+            # l receives and k gives
+            if don_max>(capa-ChargeSecond):
+                don_max = capa-ChargeSecond
+            if don_max>ChargePremier:
+                don_max = ChargePremier
+            while don>don_max:
+                don = rk_geometric(s, exch*1./capa)
+            don = -don
         else:
             don=0
-            
-
         
+
+
         TableauFourmis[k] = TableauFourmis[k]+don
         TableauFourmis[l] = TableauFourmis[l]-don
     return
