@@ -1,4 +1,6 @@
 # cython: profile=False
+# Copyright 2013 Jonathan Frisch, Pierre de Buyl
+
 import numpy as np
 cimport numpy as np
 cimport cython

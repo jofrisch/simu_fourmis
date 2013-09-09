@@ -1,20 +1,11 @@
 # coding:utf-8
-"""Pour lancer la simulation dans le terminal: for ii in `seq 20`; do python echangeSim.py $ii ; done
-
-
- for ii in `seq 10`; do for jj in `seq 5`; do python nimp.py $ii $jj; done; done
-""" 
-
-from random import *
-from math import *
+# Copyright 2013 Jonathan Frisch, Pierre de Buyl
 
 import numpy as np
-
 import echange
 from evolution import evolution
 import argparse
 import os.path
-
 import h5py
 
 parser = argparse.ArgumentParser(description='Run a simulation of food exchange.')
@@ -75,6 +66,5 @@ tf = np.array(data)
 np.savetxt(os.path.join(args.name,'m2_%02i_%s_sync%04i_N%02i_Q%02i_ex%05i.txt' % (numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,args.exch)), np.array(m2)/capaciteStock**2)
 np.savetxt(os.path.join(args.name,'snapshot_%02i_%s_sync%04i_N%02i_Q%02i_ex%05i_Steps%i.txt'%(numero,args.law,args.asyn_steps,NbIndividus,c_moyenne,args.exch,args.steps)),tf[-1])
 
-print "hey bro!"
 
 

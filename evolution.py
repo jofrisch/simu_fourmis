@@ -1,9 +1,5 @@
 # coding:utf-8
-
-"""
-Pour importer des modules venant d'autres dossiers:
-export PYTHONPATH=$HOME/Bureau/Memoire/simulation/
-"""
+# Copyright 2013 Jonathan Frisch, Pierre de Buyl
 
 import numpy as np
 import echange
